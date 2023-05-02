@@ -192,7 +192,7 @@ main =
 
 *Переписать на crepe, если не работает*
 
-```prolog {all|1-4|6-8|all}
+```prolog
 edge(1, 2).
 edge(1, 3).
 edge(3, 4).
