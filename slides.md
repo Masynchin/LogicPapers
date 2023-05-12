@@ -15,9 +15,9 @@ transition: slide-left
 
 # Немного о логическом программировании
 
-Какой-нибудь бомбический подзаголовок
+Сссылка на презентацию:
 
-*Добавить Qr-Code со ссылкой на презентацию*
+<img src="/qrcode.png" width="100" />
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -241,7 +241,7 @@ Clojure:
 
 </div>
 
-<div v-click>
+---
 
 Отрицание (НЕ):
 
@@ -249,15 +249,13 @@ Clojure:
 НеНоль(X) :- !Ноль(X).
 ```
 
-</div>
-
 ---
 
 # Граф
 
 <img src="/graph.png" width="200" />
 
-- Входные данные
+Входные данные:
 
 ```prolog
 Edge(1, 2).
@@ -297,15 +295,25 @@ CanWalk(X, Y) :- CanWalk(X, Z), CanWalk(Z, Y).
 true
 ```
 
+<div v-click>
+
 ```prolog
 ?- CanWalk(2, 4).
 true
 ```
 
+</div>
+
+<div v-click>
+
 ```prolog
 ?- CanWalk(3, 5).
 false
 ```
+
+</div>
+
+<div v-click>
 
 ```prolog
 ?- CanWalk(X, 3).
@@ -314,6 +322,8 @@ X = 2 ;
 X = 3 ;
 X = 4
 ```
+
+</div>
 
 ---
 
@@ -329,6 +339,8 @@ X = 4
 - Клетки с потопленными кораблями
 
 ---
+hideInToc: true
+---
 
 ## Раненные корабли
 
@@ -336,6 +348,8 @@ X = 4
 Hit(x, y) <- Ship(x, y), Shot(x, y);
 ```
 
+---
+hideInToc: true
 ---
 
 ## Промахи
@@ -345,6 +359,8 @@ Miss(x, y) <- Shot(x, y), !Ship(x, y);
 ```
 
 ---
+hideInToc: true
+---
 
 ## Целые корабли
 
@@ -352,6 +368,8 @@ Miss(x, y) <- Shot(x, y), !Ship(x, y);
 Miss(x, y) <- Ship(x, y), !Shot(x, y);
 ```
 
+---
+hideInToc: true
 ---
 
 ## Потопленные корабли
