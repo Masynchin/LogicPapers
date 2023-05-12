@@ -182,84 +182,138 @@ main =
 
 ---
 
-# Представление графа
+# На чём можно писать?
+
+Prolog:
+
+- [SWI Prolog](https://www.swi-prolog.org)
+
+Rust:
+
+- [Crepe](https://github.com/ekzhang/crepe)
+- [Cozo](https://github.com/cozodb/cozo)
+
+Clojure:
+
+- [Datomic](https://github.com/Datomic)
+- [DataScript](https://github.com/tonsky/datascript)
+
+---
+
+# Правила
+
+```prolog
+Утверждение :- Условия.
+```
+
+<div v-click>
+
+Примеры:
+
+</div>
+
+<div v-click>
+
+Конъюнкция (И):
+
+```prolog
+Натуральное(X) :- Целое(X), БольшеНуля(X).
+```
+
+</div>
+
+<div v-click>
+
+Дизъюнкция (ИЛИ):
+
+```prolog
+НеНоль(X) :- БольшеНуля(X) ; МеньшеНуля(X).
+```
+
+</div>
+
+<div v-click>
+
+```prolog
+НеНоль(X) :- БольшеНуля(X).
+НеНоль(X) :- МеньшеНуля(X).
+```
+
+</div>
+
+<div v-click>
+
+Отрицание (НЕ):
+
+```prolog
+НеНоль(X) :- !Ноль(X).
+```
+
+</div>
+
+---
+
+# Граф
 
 <img src="/graph.png" width="200" />
 
-*Проверить код*
-
-*Разбить на два/три слайда*
-
-*Переписать на crepe, если не работает*
+- Входные данные
 
 ```prolog
-edge(1, 2).
-edge(1, 3).
-edge(3, 4).
-node(5).
-
-node(X) :- edge(X, _).
-node(X) :- edge(_, X).
-
-% Рефлексивность
-walk(X, X) :- node(X).
-
-% Симметричность
-walk(X, Y) :- edge(X, Y).
-walk(X, Y) :- edge(Y, X).
-
-% Транзитивность
-walk(X, Y) :- walk(X, Z), walk(Z, Y).
-% Изначально: walk(X, Y) :- edge(X, Z), walk(Z, Y).
-```
-
-```prolog
-?- walk(1, 2).
-true
-```
-
-Класс эквивалентности
-
-```prolog
-?- walk(5, X).
-???
-
-?- walk(1, X).
-???
-
-?- walk(2, X).
-```
-
-<div v-click>
-
-```prolog
-?- walk(2, 4).
-true
-```
-
-</div>
-
-<div v-click>
-
-```prolog
-?- walk(3, 5).
-false
-```
-
-</div>
-
-```prolog
-?- walk(X, 4).
-...
+Edge(1, 2).
+Edge(1, 3).
+Edge(3, 4).
+Single(5).
 ```
 
 ---
 
-# Вариации
+- Все вершины
 
-- [SWI Prolog](https://www.swi-prolog.org) - Prolog *вставить лого с сайта*
-- [Datomic](https://github.com/Datomic) - Clojure (как реализация Datalog) *вставить лого из репоса*
-- [Crepe](https://github.com/ekzhang/crepe) - Rust *вставить краба*
+```prolog
+Node(X) :- Single(X).
+Node(X) :- Edge(X, _).
+Node(X) :- Edge(_, X).
+```
+
+- Правила
+
+```prolog
+% Рефлексивность
+CanWalk(X, X) :- Node(X).
+
+% Симметричность
+CanWalk(X, Y) :- Edge(X, Y).
+CanWalk(X, Y) :- Edge(Y, X).
+
+% Транзитивность
+CanWalk(X, Y) :- CanWalk(X, Z), CanWalk(Z, Y).
+```
+
+---
+
+```prolog
+?- CanWalk(1, 2).
+true
+```
+
+```prolog
+?- CanWalk(2, 4).
+true
+```
+
+```prolog
+?- CanWalk(3, 5).
+false
+```
+
+```prolog
+?- CanWalk(X, 3).
+X = 1 ;
+X = 2 ;
+X = 3 ;
+X = 4
+```
 
 ---
 
@@ -276,57 +330,27 @@ false
 
 ---
 
-Обозначим множество координат клеток кораблей так:
-
-$\text{Ship} := \Set{ (x, y) \in \R^{2} }$
-
-Аналогично обозначим множество координат клеток выстрелов:
-
-$\text{Shot} := \Set{ (x, y) \in \R^{2} }$
-
----
-
 ## Раненные корабли
-
-В клетке $(x, y)$ есть повреждённый корабль тогда и только тогда, когда в $(x, y)$ есть корабль и в $(x, y)$ был произведён выстрел.
-
-Запишем это условие математически:
-
-$\text{Hit} := \Set{ (x, y) | (x, y) \in \text{Ship}, (x, y) \in \text{Shot} }$
-
-То есть, множество клеток повреждённых кораблей есть пересечение клеток кораблей и клеток, куда был произведён выстрел.
-
----
-
-Наша математическая запись
-
-$\text{Hit} := \Set{ (x, y) | (x, y) \in \text{Ship}, (x, y) \in \text{Shot} }$
-
-На прологе будет выглядеть так:
 
 ```prolog
 Hit(x, y) <- Ship(x, y), Shot(x, y);
 ```
 
-Очень похоже, не так ли?
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
 ---
 
 ## Промахи
 
+```prolog
+Miss(x, y) <- Shot(x, y), !Ship(x, y);
+```
+
 ---
 
 ## Целые корабли
+
+```prolog
+Miss(x, y) <- Ship(x, y), !Shot(x, y);
+```
 
 ---
 
