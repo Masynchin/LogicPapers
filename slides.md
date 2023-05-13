@@ -377,7 +377,7 @@ hideInToc: true
 ## Целые корабли
 
 ```prolog
-Miss(x, y) <- Ship(x, y), !Shot(x, y);
+Undamaged(x, y) <- Ship(x, y), !Shot(x, y);
 ```
 
 <img src="/battleship_undamaged.png" width="300" />
