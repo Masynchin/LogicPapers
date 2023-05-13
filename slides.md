@@ -329,14 +329,22 @@ X = 4
 
 # Задача "Морской бой"
 
-На вход подаётся множество координат клеток кораблей, и множество координат клеток выстрелов.
+На вход подаются координаты клеток кораблей, и координаты клеток выстрелов.
 
-Вывести множества координат следующих клеток:
+Вывести координаты следующих клеток:
 
 - Клетки с раненными кораблями
 - Клетки промахов
-- Клетки целыми кораблями
+- Клетки с целыми кораблями
 - Клетки с потопленными кораблями
+
+---
+hideInToc: true
+---
+
+# Входные данные
+
+<img src="/battleship.png" width="300" />
 
 ---
 hideInToc: true
@@ -348,6 +356,8 @@ hideInToc: true
 Hit(x, y) <- Ship(x, y), Shot(x, y);
 ```
 
+<img src="/battleship_hits.png" width="300" />
+
 ---
 hideInToc: true
 ---
@@ -358,6 +368,8 @@ hideInToc: true
 Miss(x, y) <- Shot(x, y), !Ship(x, y);
 ```
 
+<img src="/battleship_misses.png" width="300" />
+
 ---
 hideInToc: true
 ---
@@ -367,6 +379,8 @@ hideInToc: true
 ```prolog
 Miss(x, y) <- Ship(x, y), !Shot(x, y);
 ```
+
+<img src="/battleship_undamaged.png" width="300" />
 
 ---
 hideInToc: true
