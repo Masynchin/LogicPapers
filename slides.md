@@ -269,23 +269,23 @@ Single(5).
 - Все вершины
 
 ```prolog
-Node(X) :- Single(X).
-Node(X) :- Edge(X, _).
-Node(X) :- Edge(_, X).
+Node(X) <- Single(X).
+Node(X) <- Edge(X, _).
+Node(X) <- Edge(_, X).
 ```
 
 - Правила
 
 ```prolog
 % Рефлексивность
-CanWalk(X, X) :- Node(X).
+CanWalk(X, X) <- Node(X).
 
 % Симметричность
-CanWalk(X, Y) :- Edge(X, Y).
-CanWalk(X, Y) :- Edge(Y, X).
+CanWalk(X, Y) <- Edge(X, Y).
+CanWalk(X, Y) <- Edge(Y, X).
 
 % Транзитивность
-CanWalk(X, Y) :- CanWalk(X, Z), CanWalk(Z, Y).
+CanWalk(X, Y) <- CanWalk(X, Z), CanWalk(Z, Y).
 ```
 
 ---
