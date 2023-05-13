@@ -297,6 +297,8 @@ true
 
 <div v-click>
 
+<br/>
+
 ```prolog
 ?- CanWalk(2, 4).
 true
@@ -306,6 +308,8 @@ true
 
 <div v-click>
 
+<br/>
+
 ```prolog
 ?- CanWalk(3, 5).
 false
@@ -314,6 +318,8 @@ false
 </div>
 
 <div v-click>
+
+<br/>
 
 ```prolog
 ?- CanWalk(X, 3).
@@ -353,7 +359,7 @@ hideInToc: true
 ## Раненные корабли
 
 ```prolog
-Hit(x, y) <- Ship(x, y), Shot(x, y);
+Hit(x, y) <- Ship(x, y), Shot(x, y).
 ```
 
 <img src="/battleship_hits.png" width="300" />
@@ -365,7 +371,7 @@ hideInToc: true
 ## Промахи
 
 ```prolog
-Miss(x, y) <- Shot(x, y), !Ship(x, y);
+Miss(x, y) <- Shot(x, y), !Ship(x, y).
 ```
 
 <img src="/battleship_misses.png" width="300" />
@@ -377,7 +383,7 @@ hideInToc: true
 ## Целые корабли
 
 ```prolog
-Undamaged(x, y) <- Ship(x, y), !Shot(x, y);
+Undamaged(x, y) <- Ship(x, y), !Shot(x, y).
 ```
 
 <img src="/battleship_undamaged.png" width="300" />
@@ -389,5 +395,93 @@ hideInToc: true
 ## Потопленные корабли
 
 ---
+hideInToc: true
+---
 
-Всё!
+## Объединим корабли 1
+
+<div v-click>
+
+```prolog
+Related(x, y, x + 1, y) <- Ship(x, y), Ship(x + 1, y).
+Related(x, y, x, y + 1) <- Ship(x, y), Ship(x, y + 1).
+Related(x1, y1, x2, y2) <- Related(x2, y2, x1, y1).
+```
+
+<img src="/battleship_graph.png" width="300" />
+
+</div>
+
+---
+hideInToc: true
+---
+
+## Объединим корабли 2
+
+```prolog
+Related(x1, y1, x2, y2) <-
+    Related(x1, y1, a, b), Related(a, b, x2, y2).
+```
+
+<img src="/battleship_components.png" width="300" />
+
+---
+hideInToc: true
+---
+
+## Целые соседи
+
+```prolog
+RelatedUndamaged(x, y) <-
+    Related(x, y, u, v), Undamaged(u, v).
+```
+
+<img src="/battleship_related_undamaged.png" width="300" />
+
+---
+hideInToc: true
+---
+
+## Потопленные корабли
+
+```prolog
+Sink(x, y) <- Hit(x, y), !RelatedUndamaged(x, y).
+```
+
+<img src="/battleship_sink.png" width="300" />
+
+---
+hideInToc: true
+---
+
+## Вся программа
+
+```prolog
+% Раненные клетки, промахи, целые клетки
+Hit(x, y) <- Ship(x, y), Shot(x, y).
+Miss(x, y) <- Shot(x, y), !Ship(x, y).
+Undamaged(x, y) <- Ship(x, y), !Shot(x, y).
+
+% Потопленные
+Related(x, y, x + 1, y) <- Ship(x, y), Ship(x + 1, y).
+Related(x, y, x, y + 1) <- Ship(x, y), Ship(x, y + 1).
+Related(x1, y1, x2, y2) <- Related(x2, y2, x1, y1).
+Related(x1, y1, x2, y2) <-
+    Related(x1, y1, a, b), Related(a, b, x2, y2).
+
+RelatedUndamaged(x, y) <-
+    Related(x, y, u, v), Undamaged(u, v).
+
+Sink(x, y) <- Hit(x, y), !RelatedUndamaged(x, y).
+```
+
+---
+hideInToc: true
+layout: center
+---
+
+## Спасибо за внимание!
+
+<br/>
+
+<img src="/qrcode.png" width="100" />
